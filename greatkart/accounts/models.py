@@ -62,7 +62,7 @@ class Account(AbstractBaseUser):
     def has_perm(self,perm,obj=None):
         return self.is_admin
     
-    def has_module_perm(self,add_level):
+    def has_module_perms(self,add_label):
         return True
 
 

@@ -31,6 +31,9 @@ class MyAccountManager(BaseUserManager):
         user.is_admin = True
         user.is_active = True
         user.is_staff = True
+        user.is_superadmin = True
+        user.save(using = self._db)
+        return user
 
 class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=50)
@@ -47,8 +50,10 @@ class Account(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
 
-    USERNAME_FEILD = 'email'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username','first_name','last_name']
+
+    objects = MyAccountManager()
     
     def __str__(self):
         return self.email

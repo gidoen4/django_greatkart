@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 
 from carts.models import Cart, CartItem
 from store.models import Product
@@ -26,8 +27,14 @@ def add_cart(request,product_id):
         cart_item.save()
     except CartItem.DoesNotExist:
         cart_item = CartItem.objects.create(
-            
+            product = product,
+            quantity = 1,
+            cart = cart,
         )
+        cart_item.save()
+    return HttpResponse(cart_item.product)
+    exit()    
+    return redirect('cart')    
 
 
 def cart(request):

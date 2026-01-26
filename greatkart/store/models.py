@@ -1,4 +1,3 @@
-from tkinter import CASCADE
 from django.db import models
 from django.urls import reverse
 from category.models import Category
@@ -26,9 +25,12 @@ variation_category_choice = {
      ('size','size'),
 }
 
-class variation(models.Model):
-       Product=models.ForeignKey(Product,on_delete=CASCADE)
+class Variation(models.Model):
+       product=models.ForeignKey(Product,on_delete=models.CASCADE)
        variation_category = models.CharField(max_length=100,choices=variation_category_choice)
        variation_value    = models.CharField(max_length=100)
        is_active = models.BooleanField(default=True)
        created_date = models.DateField(auto_now=True)
+
+       def __unicode__(self):
+            return self.product

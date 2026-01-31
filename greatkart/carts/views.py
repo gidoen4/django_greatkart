@@ -12,10 +12,12 @@ def _cart_id(request):
         cart = request.session.create()
     return cart    
 def add_cart(request,product_id):
-    color = request.GET['color']
-    size = request.GET['size']
-    return HttpResponse(color + ' ' + size)
-    exit() 
+    if request.method == "POST":
+        for item in request.POST:
+            key = item
+            value = request.POST[key]
+            print(key,value)
+    
     product = Product.objects.get(id= product_id) #get the product
 
     try:
@@ -81,6 +83,4 @@ def cart(request,total =0,quantity=0,cart_items=None):
         'tax' : tax,
         'grand_total': grand_total,
     }        
-
-
     return render(request,'store/cart.html',context)

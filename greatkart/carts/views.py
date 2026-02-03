@@ -43,7 +43,12 @@ def add_cart(request,product_id):
         for item in cart_item:
             existing_variation = item.variations.all()
             ex_var_list.append(existing_variation)
-        print(ex_var_list)    
+        print(ex_var_list)
+
+        if product_variation in ex_var_list:
+            return HttpResponse('true')
+        else:
+            return HttpResponse('false')    
         if len(product_variation) > 0:
             cart_item.variations.clear()
             for item in product_variation:

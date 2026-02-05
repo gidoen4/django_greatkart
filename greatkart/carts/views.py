@@ -40,15 +40,20 @@ def add_cart(request,product_id):
         #current variation -> product_variation list
         #item_id -> coming from database
         ex_var_list = []
+        id = []
         for item in cart_item:
             existing_variation = item.variations.all()
-            ex_var_list.append(existing_variation)
+            ex_var_list.append(list(existing_variation))
+            id.append(item.id)
         print(ex_var_list)
 
         if product_variation in ex_var_list:
-            return HttpResponse('true')
+            #increase the cartitem quantity
+            item = CartItem.objects.get(product=product,id=)
+        
         else:
-            return HttpResponse('false')    
+            return HttpResponse('false') 
+          
         if len(product_variation) > 0:
             cart_item.variations.clear()
             for item in product_variation:

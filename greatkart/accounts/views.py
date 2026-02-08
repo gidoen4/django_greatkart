@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from greatkart.accounts.models import Account
+from accounts.models import Account
 from .forms import RegistrationForm
 
 # Create your views here.
@@ -20,8 +20,8 @@ def register(request):
                                               email=email,username = username,password=password)
            user.phone_number = phone_number
            user.save()
-        else:
-            form = RegistrationForm()
+    else:
+        form = RegistrationForm()
     context = {
         'form' : form,
     }

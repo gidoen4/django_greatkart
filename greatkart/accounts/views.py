@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 from accounts.models import Account
@@ -75,6 +76,6 @@ def logout(request):
     messages.success(request,'your are now logged out')
     return redirect('login')
 
-def activate(request):
-    return
+def activate(request,uidb64):
+    return HttpResponse('ok')
 

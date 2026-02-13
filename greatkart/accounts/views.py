@@ -76,6 +76,11 @@ def logout(request):
     messages.success(request,'your are now logged out')
     return redirect('login')
 
-def activate(request,uidb64):
-    return HttpResponse('ok')
+def activate(request,uidb64,token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Account._default_manager.get(pk=uid)
+    except(TypeError,ValueError,OverflowError,Account.DoesNotExist):
+        user = None
+
 

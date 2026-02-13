@@ -47,7 +47,7 @@ def register(request):
            send_email = EmailMessage(mail_subject,message,to =[to_email])
            send_email.send()
         #    messages.success(request,'Thank you registering! we have sent you a verification email address.please verify it')
-           return redirect('accounts/login/?command=verification&email='+email)
+           return redirect('/accounts/login/?command=verification&email='+email)
     else:
         form = RegistrationForm()
     context = {
@@ -87,7 +87,7 @@ def activate(request,uidb64,token):
         user.is_active=True
         user.save()
         messages.success(request,'Congratulation! your account is activated')
-        return redirect()
+        return redirect('login')
     else:
         messages.error(request,'invalid activation link')
         return redirect('register') 

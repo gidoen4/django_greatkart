@@ -126,6 +126,9 @@ def forgotpassword(request):
             return redirect('forgotpassword')    
     return render(request,'account/forgotpassword.html')
 
+def resetpassword_validate(request):
+    return HttpResponse('ok')
+
 
 
 

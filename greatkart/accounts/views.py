@@ -105,7 +105,7 @@ def forgotpassword(request):
             #user activation
             current_site = get_current_site(request)
             mail_subject = 'reset your password'
-            message = render_to_string('accounts/account_verification_email.html',{
+            message = render_to_string('accounts/reset_password_email.html',{
                 'user':user,
                 'domain' : current_site,
                 'uid' : urlsafe_base64_encode(force_bytes(user.pk)),
@@ -116,10 +116,14 @@ def forgotpassword(request):
             send_email = EmailMessage(mail_subject,message,to =[to_email])
             send_email.send()
 
+            message.success(request,'password reset email has been sent to your email address')
+            return redirect('login')
+
 
 
         else:
-            messages.error(request,'Account does not exist')    
+            messages.error(request,'Account does not exist')
+            return redirect('forgotpassword')    
     return render(request,'account/forgotpassword.html')
 
 

@@ -97,7 +97,7 @@ def activate(request,uidb64,token):
 def dashboard(request):
    return render(request,'accounts/dashboard.html')
 
-def forgotpassword(request):
+def forgetpassword(request):
     if request.method == 'POST':
         email = request.method.POST['email']
         if Account.objects.filter(email=email).exists():
@@ -142,7 +142,21 @@ def resetpassword_validate(request,uidb64,token):
         return redirect('login')
     
 def resetpassword(request):
-    return render(request,'accounts/resetpassword.html')    
+    if request.method == 'POST':
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            uid = request.session.get('uid')
+            user = Account.objects.get(pk=uid)
+            user.set_password(password)
+            user.save()
+            messages.success(request,'Password reset successfull')
+        else:
+            messages.error(request,'Password does not match')
+            return redirect('resetpassword')
+    else:        
+      return render(request,'accounts/resetpassword.html')    
 
 
 

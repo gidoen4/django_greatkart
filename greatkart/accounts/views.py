@@ -140,6 +140,9 @@ def resetpassword_validate(request,uidb64,token):
     else:
         messages.error(request,'This link has been expired')
         return redirect('login')
+    
+def resetpassword(request):
+    return render(request,'accounts/resetpassword.html')    
 
 
 

@@ -97,12 +97,12 @@ def activate(request,uidb64,token):
 def dashboard(request):
    return render(request,'accounts/dashboard.html')
 
-def forgetpassword(request):
+def forgotPassword(request):
     if request.method == 'POST':
-        email = request.method.POST['email']
+        email = request.POST['email']
         if Account.objects.filter(email=email).exists():
             user = Account.objects.get(email__exact=email)
-            #user activation
+            # reser password email
             current_site = get_current_site(request)
             mail_subject = 'reset your password'
             message = render_to_string('accounts/reset_password_email.html',{
@@ -116,15 +116,15 @@ def forgetpassword(request):
             send_email = EmailMessage(mail_subject,message,to =[to_email])
             send_email.send()
 
-            message.success(request,'password reset email has been sent to your email address')
+            messages.success(request,'password reset email has been sent to your email address')
             return redirect('login')
 
 
 
         else:
             messages.error(request,'Account does not exist')
-            return redirect('forgotpassword')    
-    return render(request,'account/forgotpassword.html')
+            return redirect('forgotPassword')    
+    return render(request,'accounts/forgotPassword.html')
 
 def resetpassword_validate(request,uidb64,token):
     try:
@@ -136,12 +136,12 @@ def resetpassword_validate(request,uidb64,token):
     if user is not None and default_token_generator.check_token(user,token):
         request.session['uid'] = uid
         messages.success(request,'plaese reset your password')
-        return redirect('resetpassword')
+        return redirect('resetPassword')
     else:
         messages.error(request,'This link has been expired')
         return redirect('login')
     
-def resetpassword(request):
+def resetPassword(request):
     if request.method == 'POST':
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
@@ -152,11 +152,12 @@ def resetpassword(request):
             user.set_password(password)
             user.save()
             messages.success(request,'Password reset successfull')
+            return redirect('login')
         else:
             messages.error(request,'Password does not match')
-            return redirect('resetpassword')
+            return redirect('resetPassword')
     else:        
-      return render(request,'accounts/resetpassword.html')    
+      return render(request,'accounts/resetPassword.html')    
 
 
 

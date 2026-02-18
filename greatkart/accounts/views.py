@@ -16,7 +16,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
 from carts.views import _cart_id
-from carts.models import Cart
+from carts.models import Cart , CartItem
 
 
 # Create your views here.

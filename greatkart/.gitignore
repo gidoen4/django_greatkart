@@ -1,2 +1,3 @@
 /media/photos/
 .env
+db.sqlite3

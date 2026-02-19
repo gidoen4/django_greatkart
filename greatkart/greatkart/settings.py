@@ -138,10 +138,11 @@ MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
 
-#SMTP CONFIGURATION
+from decouple import config
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gidoenparajuli510@gmail.com'
-EMAIL_HOST_PASSWORD = 'blvu urgb hkyr vusl'
-EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+

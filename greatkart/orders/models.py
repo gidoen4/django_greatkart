@@ -25,7 +25,6 @@ class Order(models.Model):
 
     )
 
-    
     user = models.ForeignKey(Account,on_delete=models.SET_NULL,null=True)
     Payment = models.ForeignKey(Payment,on_delete=models.SET_NULL,blank=True,null=True)
     order_nummber = models.CharField(max_length=20)

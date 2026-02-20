@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+import requests
 
 from accounts.models import Account
 
@@ -104,7 +105,18 @@ def login(request):
                 pass    
             auth.login(request,user)
             messages.success(request,"you are now logged in")
-            return redirect('dashboard')
+            url = request.META.get('HTTP_REFERER')
+            try:
+                query = requests.utils.urlparse(url).query 
+                # next=cart/checkout/
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect (nextPage)
+                
+
+            except:
+                return redirect('dashboard')    
         else:
             messages.error(request,"invalid login credentials")
             return redirect('login')

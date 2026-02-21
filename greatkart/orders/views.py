@@ -2,7 +2,8 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 from carts.models import CartItem
-from orders.forms import OrderForm
+from .models import Order
+from .forms import OrderForm
 
 # Create your views here.
 def place_order(request):
@@ -16,3 +17,17 @@ def place_order(request):
     
     if request.method == 'POST':
         form = OrderForm(request.POST)
+        if form.is_valid():
+            # store all the billing table inside order table
+            data = Order()
+            data.first_name = form.cleaned_data('first_name')
+            data.last_name = form.cleaned_data('last_name')
+            data.phone = form.cleaned_data('phone')
+            data.email = form.cleaned_data('email')
+            data.adddress_line_1 = form.cleaned_data('adddress_line_1')
+            data.adddress_line_2 = form.cleaned_data('adddress_line_2')
+            data.country = form.cleaned_data('country')
+            data.state = form.cleaned_data('state')
+            data.city = form.cleaned_data('city')
+            data.order_note = form.cleaned_data('order_note')
+          

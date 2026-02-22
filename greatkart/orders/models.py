@@ -26,14 +26,14 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(Account,on_delete=models.SET_NULL,null=True)
-    Payment = models.ForeignKey(Payment,on_delete=models.SET_NULL,blank=True,null=True)
-    order_nummber = models.CharField(max_length=20)
+    payment = models.ForeignKey(Payment,on_delete=models.SET_NULL,blank=True,null=True)
+    order_number = models.CharField(max_length=20)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=10)
     email = models.CharField(max_length=50)
-    adddress_line_1 = models.CharField(max_length=50)
-    adddress_line_2 = models.CharField(max_length=50,blank=True)
+    address_line_1 = models.CharField(max_length=50)
+    address_line_2 = models.CharField(max_length=50,blank=True)
     country = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -48,13 +48,13 @@ class Order(models.Model):
     
 
     def __str__(self):
-        return self.user.first_name
+        return self.first_name
     
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    Payment = models.ForeignKey(Payment,on_delete=models.SET_NULL,blank=True,null=True)
+    payment = models.ForeignKey(Payment,on_delete=models.SET_NULL,blank=True,null=True)
     user = models.ForeignKey(Account,on_delete=models.CASCADE)    
-    product = models.ForeignKey(Product,on_delete=models.Case)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
     variation = models.ForeignKey(Variation,on_delete=models.CASCADE)
     color = models.CharField(max_length=50)
     size = models.CharField(max_length=50)

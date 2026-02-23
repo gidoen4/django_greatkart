@@ -3,8 +3,9 @@
 {% block content %}
 <section class="section-content padding-y bg">
 <div class="container">
-
+<h4 class="text-center" mb-4>Review your Order and Make Payment</h4>
 <div class="row">
+	
 	<aside class="col-lg-8">
 <div class="card">
   <h5 class="card-header">Billing Address</h5>
@@ -98,7 +99,9 @@
 			<p class="text-center mb-3">
 				<img src="{% static './images/misc/payments.png' %}" height="26">
 			</p>
-			<a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Make payment </a>
+			<div id="paypal-button-container">
+				<!-- paypal button will load -->
+			</div>
 			<a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
@@ -111,4 +114,33 @@
 
 </div> <!-- container .//  -->
 </section>
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '88.44'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            }
+
+        }).render('#paypal-button-container');
+    </script>
 {% endblock %}
+
+
+
+

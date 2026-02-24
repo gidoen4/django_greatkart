@@ -39,6 +39,14 @@ def payments(request):
         orderproduct.ordered = True
         orderproduct.save()
 
+        cart_item = CartItem.objects.get(id=item.id)
+        product_variation = cart_item.variations.all()
+        orderproduct = OrderProduct.objects.get(id=orderproduct.id)
+        orderproduct.variations.set(product_variation)
+
+
+
+
         
 
     #reduce the quantity of the sold products

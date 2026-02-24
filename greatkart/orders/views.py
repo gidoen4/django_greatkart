@@ -4,11 +4,50 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 from carts.models import CartItem
-from .models import Order
+from .models import Order, OrderProduct, Payment
 from .forms import OrderForm
+import json
 
 
 def payments(request):
+    body = json.loads(request.body)
+    order = Order.objects.get(user=request.user,is_ordered = False,order_number = body['orderID'])
+    # store transaction details inside payment model
+    payment = Payment(
+        user = request.user,
+        payment_id = body['transID'],
+        payment_method = body['payment_method'],
+        amount_paid = order.order_total,
+        status = body['status'],
+    )
+    payment.save()
+
+    order.payment = payment
+    order.is_ordered = True
+    order.save()
+
+    # move the cart items to Order Product table
+    cart_items = CartItem.objects.filter(user=request.user)
+    for item in cart_items:
+        orderproduct = OrderProduct()
+        orderproduct.order_id = order.id
+        orderproduct.payment = payment
+        orderproduct.user_id = request.user.id
+        orderproduct.product_id = item.product_id
+        orderproduct.quantity = item.quantity
+        orderproduct.product_price = item.product.price
+        orderproduct.ordered = True
+        orderproduct.save()
+
+        
+
+    #reduce the quantity of the sold products
+
+    #clear cart
+
+    #send order received email to customer
+
+    #send order number and transaction id back to senddata method via json response
     return render(request,'orders/payments.html')
 
 # Create your views here.

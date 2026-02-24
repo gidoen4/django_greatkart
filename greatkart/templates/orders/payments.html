@@ -131,10 +131,11 @@
     return cookieValue;
 }
 
-	var amount = {{ grand_total }}
-	var url = {% url 'payments' %}
+	var amount = "{{ grand_total }}"
+	var url = "{% url 'payments' %}"
 	var csrftoken = getCookie('csrftoken');
-	var orderID = {{ order.ordernumber }}	
+	var orderID = "{{ order.order_number }}"
+	var payment_method = 'PayPal'	
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
 		    style: {
@@ -160,22 +161,26 @@
                 return actions.order.capture().then(function(details) {
 					console.log(details);
                     // Show a success message to the buyer
+					sendData();
                     function sendData(){
 						fetch(url,{
-							method = "POST",
-							header:{
+							method : "POST",
+							headers:{
 								"Content-type" : "application/json",
 								"X-CSRFToken" : csrftoken,
 
 							},
 							body: JSON.stringify({
 								orderID : orderID,
-								transID : 
+								transID : details.id,
+								payment_method : payment_method,
+								status : details.status,
 
-							})
+
+							}),
 						})
-						.then(response => response.json())
-						.then(data => console.log(data));
+						// .then(response => response.json())
+						// .then(data => console.log(data));
 					}
                 });
             }

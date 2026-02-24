@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 from carts.models import CartItem
+from store.models import Product
 from .models import Order, OrderProduct, Payment
 from .forms import OrderForm
 import json
@@ -43,15 +44,20 @@ def payments(request):
         product_variation = cart_item.variations.all()
         orderproduct = OrderProduct.objects.get(id=orderproduct.id)
         orderproduct.variations.set(product_variation)
+        orderproduct.save()
 
 
 
 
         
 
-    #reduce the quantity of the sold products
+        #reduce the quantity of the sold products
+        product = Product.objects.get(id = item.product.id)
+        product.stock -= item.quantity
+        product.save()
 
     #clear cart
+    CartItem.objects.filter(user=request.user).delete()
 
     #send order received email to customer
 

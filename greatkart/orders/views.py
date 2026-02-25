@@ -64,7 +64,7 @@ def payments(request):
     #send order received email to customer
     mail_subject = 'Tnak you for your order!'
     message = render_to_string('orders/order_received_email.html',{
-               'user':user,
+               'user':request.user,
                'order':order,
 
            })  

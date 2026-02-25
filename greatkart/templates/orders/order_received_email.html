@@ -2,10 +2,8 @@
 
 hi {{user.first_name}},
 
-please click on below link to confirm your registration.
+YOUR ORDER HAS BEEN RECEIVED
 
-http://{{domain}}{%  url 'activate' uidb64=uid token=token %}
-
-if you think its not you , please ignore this email
+Order Number:{{order.order_number}}
 
 {% endautoescape off %}

@@ -1,7 +1,7 @@
 import datetime
 
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse , JsonResponse
 
 from carts.models import CartItem
 from store.models import Product
@@ -72,8 +72,12 @@ def payments(request):
     send_email = EmailMessage(mail_subject,message,to =[to_email])
     send_email.send()
 
-    #send order number and transaction id back to senddata method via json response
-    return render(request,'orders/payments.html')
+    #send order number and transaction id back to senddata method via json response 
+    data = {
+        'order_number': order.order_number,
+        'transID' : payment.payment_id,
+    }
+    return JsonResponse(data)
 
 # Create your views here.
 def place_order(request,total =0,quantity=0):
@@ -135,7 +139,10 @@ def place_order(request,total =0,quantity=0):
             }
             return render(request,'orders/payments.html',context) 
     else:
-        return redirect('checkout')    
+        return redirect('checkout')  
+
+def order_complete(request):
+    return render(request,'orders/order_complete.html')      
 
             
 

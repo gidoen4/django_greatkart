@@ -77,7 +77,7 @@
 		<h3>Customer Reviews </h3>  
 		
 	</header>
-	<form action="" method="POST">
+	<form action="{% url 'submit_review' single_product.id %}" method="POST">
 		{% csrf_token %}
 		<h5>Write Your Review</h5>
 		<div>
@@ -96,7 +96,7 @@
 				<input type="radio" name="rating" id="rating2" value="1" required/><label for="rating2" title="1" ></label>
 				<input type="radio" name="rating" id="rating1" value="0.5" required/><label for="rating1" title="0.5" class="half"></label>
 			 </div>
-
+			 <br>
 			 Review Title :  
 			 <input type="text" class="form-control" name="subject">
 			 <br>

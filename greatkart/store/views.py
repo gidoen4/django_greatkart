@@ -42,6 +42,9 @@ def product_detail(request,category_slug,product_slug):
         in_cart = CartItem.objects.filter(cart__cart_id = _cart_id(request),product = single_product).exists()
     except Exception as e:
         raise e
+    
+    try:
+        orderproduct
 
     context = {
         'single_product' : single_product,
@@ -72,7 +75,7 @@ def submit_review(request,product_id):
             form = ReviewFom(request.POST,instance=reviews)
             form.save()
             messages.success(request,'Thank you! , your review has been updated')
-            return redirect()
+            return redirect(url)
 
         except ReviewRating.DoesNotExist:
             form = ReviewFom(request.POST)   

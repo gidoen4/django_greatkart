@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from category.models import Category
 from carts.models import CartItem,Cart
 from carts.views import _cart_id
+from orders.models import OrderProduct
 from .models import Product, ReviewRating
 from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 from django.db.models import Q
@@ -44,11 +45,14 @@ def product_detail(request,category_slug,product_slug):
         raise e
     
     try:
-        orderproduct
+        orderproduct = OrderProduct.objects.filter(user = request.user,product_id = single_product.id).exists()
+    except OrderProduct.DoesNotExist:  
+        orderproduct = None  
 
     context = {
         'single_product' : single_product,
         'in_cart': in_cart,
+        'orderproduct' : orderproduct,
     }    
     return render(request,'store/product_detail.html',context)
 

@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Account
+from .models import Account,UserProfile
 
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
@@ -33,4 +33,14 @@ class RegistrationForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class']='form-control'
 
-              
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ('first_name','last_name','phone_number')
+
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('address_line_1','address_line_2','city','state','country','profile_picture')

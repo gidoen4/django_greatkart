@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 import requests
 
 from .models import Account, UserProfile
-from orders.models import Order
+from orders.models import Order, OrderProduct
 
 from .forms import RegistrationForm,UserForm,UserProfileForm
 from django.contrib import messages,auth
@@ -281,3 +281,15 @@ def change_password(request):
             messages.error(request,'Password does not match')
             return redirect('change_password')        
     return render(request,'accounts/change_password.html')
+
+@login_required(login_url='login')
+def order_detail(request,order_id):
+    order_detail = OrderProduct.objects.filter(order__order_number=order_id)
+    order = Order.objects.get(order_number=order_id)
+    context = {
+        'order_detail' : order_detail,
+        'order' : order,
+    }
+    return render(request,'accounts/order_detail.html',context)
+
+
